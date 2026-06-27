@@ -1,0 +1,20 @@
+services:
+  docling-mcp-server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: docling-mcp-server
+    volumes:
+      # Persist huggingface cache (models, tokenizer weights)
+      - hf_cache:/root/.cache/huggingface
+      # Persist/share temp files if needed
+      - ./temp_files:/app/temp_files
+    environment:
+      - HF_HOME=/root/.cache/huggingface
+      - PYTHONUNBUFFERED=1
+    ports:
+      - "8000:8000"
+
+volumes:
+  hf_cache:
+    driver: local
